@@ -1,3 +1,4 @@
+
 let img, img2, img3, imgSoupPiece;
 
 let imgX = 200;
