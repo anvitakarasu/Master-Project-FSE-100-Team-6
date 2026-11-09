@@ -28,7 +28,7 @@ const levels = [
     spoonSize: 100,
     pieceOffsetY: 0,
     moveType: 'none',
-    label: "Level 1: Easy Spooning"
+    label: "Level 1: Easy Mode"
   },
   {
     levelNum: 2,
@@ -38,7 +38,7 @@ const levels = [
     mouthX: 40,
     mouthY: 90,
     spoonSize: 85,
-    pieceOffsetY: 25,
+    pieceOffsetY: 15,
     moveType: 'none',
     label: "Level 2: Shorter Time!"
   },
@@ -115,7 +115,7 @@ function drawStartScreen() {
   textFont('Courier New');
   textAlign(CENTER, CENTER);
   textSize(32);
-  text("SPOON FEEDING GAME", width / 2, 100);
+  text("Using Tableware", width / 2, 100);
   textSize(18);
   text("Beat 4 Levels of Increasing Fun!", width / 2, 150);
   text("Click Anywhere to Start Level 1", width / 2, 210);
