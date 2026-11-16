@@ -88,6 +88,9 @@ async function setup() {
 
   isLoaded = true;
 }
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
 
 function draw() {
   background(210, 150, 190);
