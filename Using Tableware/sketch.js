@@ -1,64 +1,274 @@
-let img;
-let imgX = 200;
-let imgY = 100;
-let imgW = 150;
-let imgH = 150;
-let img2;
-let img2X = 50;
-let img2Y = 50;
-let img2W = 50;
-let img2H = 50;
+let img, img2, img3, imgSoupPiece;
+
+let imgX = 270;
+let imgY = 180;
+let imgW = 100; 
+let imgH = 100;
+
+let timeLimit = 30;
+let timeLeft = 30;
+
 let isDragging = false;
+let currentTint = null;
+let hasSoup = false;
+
+let currentLevel = 0; 
+let score = 0;
+let highScore = 0;
+let levelStartTime = 0;
+let isLoaded = false; 
+
+
+const levels = [
+  {
+    levelNum: 1,
+    timeLimit: 30,
+    foodX: 420,
+    foodY: 140,
+    mouthX: 20,
+    mouthY: 40,
+    spoonSize: 100,
+    pieceOffsetY: 0,
+    moveType: 'none',
+    label: "Level 1: Easy Mode"
+  },
+  {
+    levelNum: 2,
+    timeLimit: 20,
+    foodX: 480,
+    foodY: 180,
+    mouthX: 40,
+    mouthY: 90,
+    spoonSize: 85,
+    pieceOffsetY: 15,
+    moveType: 'none',
+    label: "Level 2: Shorter Time!"
+  },
+  {
+    levelNum: 3,
+    timeLimit: 15,
+    foodX: 420,
+    foodY: 100,
+    mouthX: 30,
+    mouthY: 50,
+    spoonSize: 75,
+    pieceOffsetY: 25,
+    moveType: 'vertical_bowl',
+    label: "Level 3: Moving Bowl!"
+  },
+  {
+    levelNum: 4,
+    timeLimit: 14,
+    foodX: 450,
+    foodY: 120,
+    mouthX: 50,
+    mouthY: 40,
+    spoonSize: 70,
+    pieceOffsetY: 25,
+    moveType: 'chaos',
+    label: "Level 4: Gentle Chaos!"
+  }
+];
+
+
 async function setup() {
   createCanvas(640, 320);
-  
-  
+
+
   img = await loadImage("images/spoon.png");
   img2 = await loadImage("images/happygirl.png");
-  //img3= await loadImage("images")
-  
-  image(img, 0, 0);
-  
+  img3 = await loadImage("images/soup.png");
+  imgSoupPiece = await loadImage("images/piece.png"); 
+
+  img2.resize(180, 180);
+  img.resize(100, 100);
+  img3.resize(100, 100);
+  imgSoupPiece.resize(100, 100); 
+
+  isLoaded = true;
 }
-
-
 
 function draw() {
-background(210,150,190);
-  textSize(24);
-  text("Using Tableware",300,50);
-  textFont('Courier New');
-  textSize(18);
-  text("Drag spoon to food",300,65);
- 
-  
-  image(img2, 0, 0);
-  img2.resize(200,200);
-  img.resize(100,100);
- if (isDragging) {
-    imgX = mouseX - imgW / 2;
-    imgY = mouseY - imgH / 2;
+  background(210, 150, 190);
+
+
+  if (!isLoaded) {
+    fill(0);
+    textFont('Courier New');
+    textAlign(CENTER, CENTER);
+    textSize(20);
+    text("Loading Game Assets...", width / 2, height / 2);
+    return;
   }
-  
-  image(img, imgX, imgY, imgW, imgH);
+
+  if (currentLevel === 0) {
+    drawStartScreen();
+  } else if (currentLevel <= levels.length) {
+    playLevel(levels[currentLevel - 1]);
+  } else {
+    drawWinScreen();
+  }
 }
 
-function mousePressed() {
+
+
+function drawStartScreen() {
+  fill(0);
+  textFont('Courier New');
+  textAlign(CENTER, CENTER);
+  textSize(32);
+  text("Using Tableware", width / 2, 100);
+  textSize(18);
+  text("Beat 4 Levels of Increasing Fun!", width / 2, 150);
+  text("Click Anywhere to Start Level 1", width / 2, 210);
+}
+
+function playLevel(lvl) {
+  textAlign(LEFT, BASELINE);
   
-  if (
-    mouseX >= imgX &&
-    mouseX <= imgX + imgW &&
-    mouseY >= imgY &&
-    mouseY <= imgY + imgH
-  ) {
+  let elapsedSeconds = (millis() - levelStartTime) / 1000;
+  timeLeft = max(0, lvl.timeLimit - floor(elapsedSeconds));
+
+  let currentFoodX = lvl.foodX;
+  let currentFoodY = lvl.foodY;
+  let currentMouthX = lvl.mouthX;
+  let currentMouthY = lvl.mouthY;
+
+  if (lvl.moveType === 'vertical_bowl') {
+    currentFoodY += sin(frameCount * 0.05) * 50;
+  } else if (lvl.moveType === 'chaos') {
+    currentFoodX += cos(frameCount * 0.04) * 30;
+    currentFoodY += sin(frameCount * 0.04) * 30;
+    currentMouthY += sin(frameCount * 0.03) * 25;
+  }
+
+  
+  textSize(22);
+  textFont('Courier New');
+  fill(0);
+  text(lvl.label, 250, 40);
+  textSize(18);
+  text("Time left: " + timeLeft + "s", 250, 70);
+
+
+  image(img2, currentMouthX, currentMouthY);   
+  image(img3, currentFoodX, currentFoodY);  
+
+  if (isDragging) {
+    imgX = mouseX - lvl.spoonSize / 2;
+    imgY = mouseY - lvl.spoonSize / 2;
+  }
+  
+ 
+  push(); 
+    if (currentTint) tint(currentTint); 
+    image(img, imgX, imgY, lvl.spoonSize, lvl.spoonSize); 
+  pop(); 
+
+  if (hasSoup) {
+   
+    image(imgSoupPiece, imgX - 5, imgY - 20, lvl.spoonSize, lvl.spoonSize);
+  } else {
+    
+    image(imgSoupPiece, currentFoodX + 8, currentFoodY + 8, 100, 100);
+  }
+
+
+  if (timeLeft <= 0) {
+    textAlign(CENTER, CENTER);
+    textSize(36);
+    fill(255, 0, 0);
+    text("TIME'S UP!", width / 2, height / 2 - 20);
+    textSize(18);
+    fill(0);
+    text("Click to Retry Level " + currentLevel, width / 2, height / 2 + 30);
+    noLoop();
+  }
+}
+
+function drawWinScreen() {
+  textAlign(CENTER, CENTER);
+  fill(0, 120, 0);
+  textFont('Courier New');
+  textSize(34);
+  text("YOU BEAT ALL 4 LEVELS!", width / 2, height / 2 - 20);
+  textSize(18);
+  fill(0);
+  text("Click anywhere to Restart Game", width / 2, height / 2 + 30);
+}
+
+
+
+function mousePressed() {
+  if (!isLoaded) return;
+
+  if (currentLevel === 0 || currentLevel > levels.length) {
+    startLevel(1);
+    return;
+  }
+  
+  if (timeLeft <= 0) {
+    startLevel(currentLevel);
+    return;
+  }
+
+  let lvl = levels[currentLevel - 1];
+
+  if (mouseX >= imgX && mouseX <= imgX + lvl.spoonSize && 
+      mouseY >= imgY && mouseY <= imgY + lvl.spoonSize) {
     isDragging = true;
   }
 }
+
 function mouseReleased() {
+  if (!isDragging || !isLoaded) return;
   isDragging = false;
-  if(imgX>=50&&imgY>=50) {
-    tint(0,255,0);
+  
+  let lvl = levels[currentLevel - 1];
+
+  let currentFoodX = lvl.foodX;
+  let currentFoodY = lvl.foodY;
+  let currentMouthX = lvl.mouthX;
+  let currentMouthY = lvl.mouthY;
+
+  if (lvl.moveType === 'vertical_bowl') {
+    currentFoodY += sin(frameCount * 0.05) * 50;
+  } else if (lvl.moveType === 'chaos') {
+    currentFoodX += cos(frameCount * 0.04) * 30;
+    currentFoodY += sin(frameCount * 0.04) * 30;
+    currentMouthY += sin(frameCount * 0.03) * 25;
+  }
+
+  let scoopDist = (lvl.levelNum === 4) ? 85 : 70;
+  if (dist(imgX, imgY, currentFoodX, currentFoodY) < scoopDist) {
+    hasSoup = true; 
+    currentTint = color(0, 220, 0); 
+  } 
+  else if (hasSoup && dist(imgX, imgY, currentMouthX, currentMouthY) < 95) {
+    hasSoup = false; 
+    currentTint = color(0, 255, 0);
+    
+    if (currentLevel < levels.length) {
+      startLevel(currentLevel + 1);
+    } else {
+      currentLevel++; 
+    }
   }
 }
 
-
+function startLevel(levelNum) {
+  currentLevel = levelNum;
+  levelStartTime = millis(); 
+  
+  let lvl = levels[currentLevel - 1];
+  if (lvl) {
+    imgW = lvl.spoonSize;
+    imgH = lvl.spoonSize;
+  }
+  
+  imgX = 270; 
+  imgY = 160;
+  hasSoup = false;
+  currentTint = null;
+  loop();
+}
