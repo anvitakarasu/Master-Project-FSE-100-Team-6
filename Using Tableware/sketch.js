@@ -13,6 +13,8 @@ let currentTint = null;
 let hasSoup = false;
 
 let currentLevel = 0; 
+let score = 0;
+let highScore = 0;
 let levelStartTime = 0;
 let isLoaded = false; 
 
@@ -140,7 +142,7 @@ function playLevel(lvl) {
     currentMouthY += sin(frameCount * 0.03) * 25;
   }
 
-  // Draw HUD
+  
   textSize(22);
   textFont('Courier New');
   fill(0);
@@ -164,9 +166,11 @@ function playLevel(lvl) {
   pop(); 
 
   if (hasSoup) {
-    image(imgSoupPiece, imgX - 5, imgY - 20 + lvl.pieceOffsetY, lvl.spoonSize, lvl.spoonSize);
+   
+    image(imgSoupPiece, imgX - 5, imgY - 20, lvl.spoonSize, lvl.spoonSize);
   } else {
-    image(imgSoupPiece, currentFoodX - 5, currentFoodY - 5 + lvl.pieceOffsetY, lvl.spoonSize, lvl.spoonSize);
+    
+    image(imgSoupPiece, currentFoodX + 8, currentFoodY + 8, 100, 100);
   }
 
 
