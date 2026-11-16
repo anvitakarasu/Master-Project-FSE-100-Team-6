@@ -72,7 +72,8 @@ const levels = [
 
 
 async function setup() {
-  createCanvas(640, 320);
+  createCanvas(windowWidth, windowHeight);
+
 
 
   img = await loadImage("images/spoon.png");
