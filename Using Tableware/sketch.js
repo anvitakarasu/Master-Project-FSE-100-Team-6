@@ -1,4 +1,3 @@
-
 let img, img2, img3, imgSoupPiece;
 
 let imgX = 270;
@@ -19,7 +18,6 @@ let highScore = 0;
 let levelStartTime = 0;
 let isLoaded = false; 
 
-// Virtual 640x320 centering variables (keeps images at fixed pixel sizes)
 const BASE_W = 640;
 const BASE_H = 320;
 let offsetX = 0;
@@ -34,7 +32,6 @@ const levels = [
     mouthX: 20,
     mouthY: 40,
     spoonSize: 100,
-    pieceOffsetY: 0,
     moveType: 'none',
     label: "Level 1: Easy Mode"
   },
@@ -46,7 +43,6 @@ const levels = [
     mouthX: 40,
     mouthY: 90,
     spoonSize: 85,
-    pieceOffsetY: 15,
     moveType: 'none',
     label: "Level 2: Shorter Time!"
   },
@@ -58,7 +54,6 @@ const levels = [
     mouthX: 30,
     mouthY: 50,
     spoonSize: 75,
-    pieceOffsetY: 25,
     moveType: 'vertical_bowl',
     label: "Level 3: Moving Bowl!"
   },
@@ -70,7 +65,6 @@ const levels = [
     mouthX: 50,
     mouthY: 40,
     spoonSize: 70,
-    pieceOffsetY: 25,
     moveType: 'chaos',
     label: "Level 4: Gentle Chaos!"
   }
@@ -78,6 +72,7 @@ const levels = [
 
 async function setup() {
   createCanvas(windowWidth, windowHeight);
+  pixelDensity(1); // Prevents Windows/Mac display scaling from enlarging or distorting sprites
 
   highScore = Number(localStorage.getItem("tablewareHighScore")) || 0;
 
@@ -86,11 +81,6 @@ async function setup() {
   img3 = await loadImage("images/soup.png");
   imgSoupPiece = await loadImage("images/piece.png"); 
 
-  img2.resize(180, 180);
-  img.resize(100, 100);
-  img3.resize(100, 100);
-  imgSoupPiece.resize(100, 100); 
-
   isLoaded = true;
 }
 
@@ -98,9 +88,6 @@ function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
 
-// ==========================================
-// 1. UPDATED getVirtualMouse() GOES HERE
-// ==========================================
 function getVirtualMouse() {
   return {
     x: mouseX - offsetX,
@@ -108,13 +95,9 @@ function getVirtualMouse() {
   };
 }
 
-// ==========================================
-// 2. UPDATED draw() GOES HERE
-// ==========================================
 function draw() {
   background(210, 150, 190);
 
-  // Center the 640x320 game area without enlarging any images
   offsetX = max(0, (width - BASE_W) / 2);
   offsetY = max(0, (height - BASE_H) / 2);
 
@@ -182,8 +165,9 @@ function playLevel(lvl) {
   text("Time left: " + timeLeft + "s", 250, 70);
   text("Score: " + score, 250, 95);
 
-  image(img2, currentMouthX, currentMouthY);   
-  image(img3, currentFoodX, currentFoodY);  
+  // Explicit pixel sizes passed directly to image()
+  image(img2, currentMouthX, currentMouthY, 180, 180);   
+  image(img3, currentFoodX, currentFoodY, 100, 100);  
 
   if (isDragging) {
     imgX = vMouse.x - lvl.spoonSize / 2;
