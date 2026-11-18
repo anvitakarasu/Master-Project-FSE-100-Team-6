@@ -1,3 +1,4 @@
+
 let img, img2, img3, imgSoupPiece;
 
 let imgX = 270;
@@ -18,10 +19,9 @@ let highScore = 0;
 let levelStartTime = 0;
 let isLoaded = false; 
 
-// Virtual 640x320 scaling variables
+// Virtual 640x320 centering variables (keeps images at fixed pixel sizes)
 const BASE_W = 640;
 const BASE_H = 320;
-let scaleFactor = 1;
 let offsetX = 0;
 let offsetY = 0;
 
@@ -98,25 +98,28 @@ function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
 
-// Helper to translate screen mouse coordinates into 640x320 game coordinates
+// ==========================================
+// 1. UPDATED getVirtualMouse() GOES HERE
+// ==========================================
 function getVirtualMouse() {
   return {
-    x: (mouseX - offsetX) / scaleFactor,
-    y: (mouseY - offsetY) / scaleFactor
+    x: mouseX - offsetX,
+    y: mouseY - offsetY
   };
 }
 
+// ==========================================
+// 2. UPDATED draw() GOES HERE
+// ==========================================
 function draw() {
   background(210, 150, 190);
 
-  // Fit 640x320 game centered inside any window size without zooming or stretching
-  scaleFactor = min(width / BASE_W, height / BASE_H);
-  offsetX = (width - BASE_W * scaleFactor) / 2;
-  offsetY = (height - BASE_H * scaleFactor) / 2;
+  // Center the 640x320 game area without enlarging any images
+  offsetX = max(0, (width - BASE_W) / 2);
+  offsetY = max(0, (height - BASE_H) / 2);
 
   push();
   translate(offsetX, offsetY);
-  scale(scaleFactor);
 
   if (!isLoaded) {
     fill(0);
@@ -275,7 +278,6 @@ function mouseReleased() {
     hasSoup = false; 
     currentTint = color(0, 255, 0);
 
-    // Add level completion points + time bonus
     score += 100 + (timeLeft * 10);
     if (score > highScore) {
       highScore = score;
