@@ -72,7 +72,7 @@ const levels = [
 
 async function setup() {
   createCanvas(windowWidth, windowHeight);
-  pixelDensity(1); // Prevents Windows/Mac display scaling from enlarging or distorting sprites
+  pixelDensity(1); 
 
   highScore = Number(localStorage.getItem("tablewareHighScore")) || 0;
 
@@ -165,7 +165,7 @@ function playLevel(lvl) {
   text("Time left: " + timeLeft + "s", 250, 70);
   text("Score: " + score, 250, 95);
 
-  // Explicit pixel sizes passed directly to image()
+ 
   image(img2, currentMouthX, currentMouthY, 180, 180);   
   image(img3, currentFoodX, currentFoodY, 100, 100);  
 
