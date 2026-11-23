@@ -6,7 +6,7 @@ const BASE_W = 640;
 const BASE_H = 360;
 
 // Score Board variables
-let clickPoints = 1200;
+let clickPoints = 0;
 let clickTime = -1000;
 
 // Point Multiplier Variables
@@ -15,11 +15,11 @@ let totalPointsToAdd = 1;
 let upgradeBoxClicked = false;
 let upgradeBoxClickTime = 0;
 let upgradeBoxScale = 1;
-let pointMultiplierCost = 200;
+let pointMultiplierCost = 50;
 
 // Auto Clicker Variables
 let autoClickerAmount = 1;
-let autoClickerCost = 200;
+let autoClickerCost = 100;
 let autoClickerMultiplier = 2;
 let upgradeBox1Clicked = false;
 let upgradeBox1ClickTime = 0;
@@ -90,7 +90,7 @@ function mousePressed() {
     pointUpgradeMultiplier = pointUpgradeMultiplier + 1;
 
     clickPoints = clickPoints - pointMultiplierCost;
-    pointMultiplierCost = pointMultiplierCost * 4;
+    pointMultiplierCost = pointMultiplierCost * 3;
 
     niceUpgradeFeedbackStartTime = millis();
     showNiceUpgradeFeedback = true;
@@ -274,3 +274,4 @@ function drawBackButton() {
   line(30, 45, 38, 53);
   pop();
 }
+
