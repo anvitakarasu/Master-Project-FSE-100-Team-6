@@ -1,8 +1,8 @@
 let gameButtons = [
-  { label: "Cupcake\nClicker", x: 0, y: 0, url: "Cupcake Clicker/index.html" },
-  { label: "Finger\nPainting", x: 0, y: 0, url: "Finger Painting/index.html" },
-  { label: "Using\nTableware", x: 0, y: 0, url: "Using Tableware/index.html" },
-  { label: "Pressing\nButtons", x: 0, y: 0, url: "Pressing Buttons/index.html" }
+  { label: "Cupcake\nClicker", x: 0, y: 0, url: "../Cupcake Clicker/index.html" },
+  { label: "Finger\nPainting", x: 0, y: 0, url: "../Finger Painting/index.html" },
+  { label: "Using\nTableware", x: 0, y: 0, url: "../Using Tableware/index.html" },
+  { label: "Pressing\nButtons", x: 0, y: 0, url: "../Pressing Buttons/index.html" }
 ];
 
 let btnWidth = 150;

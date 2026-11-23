@@ -167,13 +167,10 @@ function drawBackButton() {
   pop();
 }
 
-function mousePressed() {
-  if (mouseY > 100) {
-    userPath = [];
-    isTracingCorrect = true;
-  }
 
+function mousePressed() {
   if (mouseX > 20 && mouseX < 20 + backBtnSize && mouseY > 20 && mouseY < 20 + backBtnSize) {
-    window.location.href = "index.html";
+    window.location.href = "../(a)Home Page/index.html";
+    return;
   }
 }

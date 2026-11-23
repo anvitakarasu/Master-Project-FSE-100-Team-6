@@ -1,5 +1,7 @@
 let img, img2, img3, imgSoupPiece;
 
+let backBtnSize = 50;
+
 let imgX = 270;
 let imgY = 180;
 let imgW = 100; 
@@ -123,7 +125,32 @@ function draw() {
   }
 
   pop();
+
+  drawBackButton();
 }
+
+
+function drawBackButton() {
+  push();
+  rectMode(CORNER);
+
+  let isHover = mouseX > 20 && mouseX < 20 + backBtnSize && mouseY > 20 && mouseY < 20 + backBtnSize;
+
+  fill(isHover ? 185 : 255);
+  stroke(0);
+  strokeWeight(2);
+  rect(20, 20, backBtnSize, backBtnSize, 10);
+
+  // Left Arrow Icon
+  stroke(0);
+  strokeWeight(3);
+  noFill();
+  line(45, 45, 30, 45);
+  line(30, 45, 38, 37);
+  line(30, 45, 38, 53);
+  pop();
+}
+
 
 function drawStartScreen() {
   fill(0);
@@ -212,6 +239,13 @@ function drawWinScreen() {
 }
 
 function mousePressed() {
+  // 1. Back button click -> Navigate back to the homepage
+  if (mouseX > 20 && mouseX < 20 + backBtnSize && mouseY > 20 && mouseY < 20 + backBtnSize) {
+    window.location.href = "../(a)Home Page/index.html";
+    return;
+  }
+
+  // 2. Existing game click logic
   if (!isLoaded) return;
 
   if (currentLevel === 0 || currentLevel > levels.length) {
@@ -292,3 +326,4 @@ function startLevel(levelNum) {
   currentTint = null;
   loop();
 }
+

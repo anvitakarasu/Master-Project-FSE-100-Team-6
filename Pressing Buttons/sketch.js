@@ -15,6 +15,8 @@ let timeRemaining = 10;
 let gameOver = false;
 let gameWon = false; 
 
+let backBtnSize = 50;
+
 function setup() { 
   createCanvas(windowWidth, windowHeight);
   btn1 = createButton('Press A');
@@ -76,6 +78,35 @@ function draw() {
     text("Time remaining: " + nf(timeRemaining, 1, 0), width / 2, 50);
   }
   
+
+  function drawBackButton() {
+    push();
+    rectMode(CORNER);
+
+    let isHover = mouseX > 20 && mouseX < 20 + backBtnSize && mouseY > 20 && mouseY < 20 + backBtnSize;
+
+    fill(isHover ? 185 : 255);
+    stroke(0);
+    strokeWeight(2);
+    rect(20, 20, backBtnSize, backBtnSize, 10);
+
+    // Left Arrow Icon
+    stroke(0);
+    strokeWeight(3);
+    noFill();
+    line(45, 45, 30, 45);
+    line(30, 45, 38, 37);
+    line(30, 45, 38, 53);
+    pop();
+  }
+
+}
+
+function mousePressed() { 
+  if (mouseX > 20 && mouseX < 20 + backBtnSize && mouseY > 20 && mouseY < 20 + backBtnSize) {
+    window.location.href = "../(a)Home Page/index.html";
+    return;
+  }
 }
 
 function keyPressed() {
@@ -208,3 +239,5 @@ function changeColorOfBtn2() {
 function changeColorOfBtn3() {
   btn3.style('background-color', '#00ff00');
 }
+
+
