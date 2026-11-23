@@ -156,7 +156,7 @@ function playLevel(lvl) {
     currentMouthY += sin(frameCount * 0.03) * 25;
   }
 
-  // HUD
+
   textSize(22);
   textFont('Courier New');
   fill(0);
